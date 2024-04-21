@@ -30,7 +30,10 @@ io.on('connection',(socket)=>{
     })
     socket.on('sending-likings',(likes)=>{
       console.log(likes,"this is sending likes");
-      io.emit(`receiving-likings-${likes.postId}`, likes.updatedLikes)
+       io.emit(`notifying-likings-${likes.postId}`)
+    })
+    socket.on('update-liked',(data)=>{
+      io.to(data.socketId).emit(`receiving-liked-${data.postId}`, data.liked)
     })
     socket.on('sending-new-comment',(newComment)=>{
       io.emit('receiving-new-comment',newComment)
