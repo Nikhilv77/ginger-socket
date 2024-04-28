@@ -3,12 +3,11 @@ const dotenv = require('dotenv');
 dotenv.config();
 const PORT = process.env.PORT || 8900;
 
-const io = require('socket.io')(PORT,{
-  cors:{
-    origin : process.env.CORS_ORIGIN || 'http://localhost:3000'
+const io = require('socket.io')(PORT, {
+  cors: {
+    origin: '*'
   }
-  
-})
+});
 let users = [];
 io.on('connection',(socket)=>{
   
