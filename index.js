@@ -1,12 +1,17 @@
 const dotenv = require('dotenv');
+const express = require('express');
 
 dotenv.config();
 const PORT = process.env.PORT || 8900;
+const app = express();
 
 const io = require('socket.io')(PORT, {
   cors: {
     origin: '*'
   }
+});
+app.get('/', (req, res) => {
+  res.send('Hello from the server!');
 });
 let users = [];
 io.on('connection',(socket)=>{
