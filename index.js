@@ -1,19 +1,22 @@
 const dotenv = require('dotenv');
 const express = require('express');
+const http = require('http'); // Import http module
+const socketIo = require('socket.io');
 
 dotenv.config();
 const PORT = process.env.PORT || 8900;
 const app = express();
-
-const io = require('socket.io')(PORT, {
+const server = http.createServer(app); // Create HTTP server
+const io = socketIo(server, {
   cors: {
     origin: '*'
   }
 });
-app.get('/', (req, res) => {
-  res.send('Hello from the server!');
-});
+
 let users = [];
+app.get('/', (req, res) => {
+  res.send('Hello World!');
+})
 io.on('connection',(socket)=>{
   
     socket.on('add-user',(newUserId)=>{
@@ -75,3 +78,6 @@ io.on('connection',(socket)=>{
      io.emit('get-users',users)
     })
 })
+server.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
+});
