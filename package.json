@@ -4,9 +4,9 @@
   "description": "socket server for my ginger chat",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "pm2 start index.js --name ginger-chat-socket",
     "test": "echo \"Error: no test specified\" && exit 1"
-  },
+},
   "author": "Nikhil",
   "license": "ISC",
   "dependencies": {

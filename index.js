@@ -14,6 +14,12 @@ io.on('connection',(socket)=>{
       }
       io.emit('get-users',users);
     })
+    // socket.on('user_connected',(id)=>{
+    //   if(!users.some(user=>user.id === newUserId)){
+    //     users.push({id:newUserId,socketId:socket.id})
+    //   }
+    //   io.emit('connected_users',users)
+    // })
     socket.on('send-message',(data)=>{
   if(data){
     const{receiverId} = data;
@@ -30,17 +36,29 @@ io.on('connection',(socket)=>{
     })
     socket.on('sending-likings',(likes)=>{
       console.log(likes,"this is sending likes");
-       io.emit(`notifying-likings-${likes.postId}`)
+       io.emit(`notifying-likings-${likes.postId}`,{postId:likes.postId})
     })
     socket.on('update-liked',(data)=>{
       io.to(data.socketId).emit(`receiving-liked-${data.postId}`, data.liked)
     })
     socket.on('sending-new-comment',(newComment)=>{
-      io.emit('receiving-new-comment',newComment)
+      io.emit(`receiving-new-comment${newComment.postId}`,newComment.newComment)
     })
     socket.on('delete-Post',(postId)=>{
       console.log(postId, "this is post id");
       io.emit('deleted-post',postId);
+    })
+    socket.on('notifying-friend-request',(friendId)=>{
+      io.emit(`receiving-friend-request-${friendId}`)
+    })
+    socket.on('notifying-accepting-request',(friendId)=>{
+      io.emit(`receiving-accepting-request-${friendId}`)
+    })
+    socket.on('notifying-unfriend',(friendId)=>{
+      io.emit(`receiving-unfriend-${friendId}`)
+    })
+    socket.on('notifying-declining-request',(friendId)=>{
+      io.emit(`receiving-declining-request-${friendId}`)
     })
     socket.on('disconnect',()=>{
       console.log("disconnected");
